@@ -6,18 +6,47 @@
     var cheat = false;
     var startSlide = 0;
 
-    initWinPanel();
-    if( cheat ){
-      showWinPanel();
-      startSlide = $('.slide').length;
-    }
+    $('a.quickstart').fancybox({
+      type: 'ajax',
+      afterShow: function() {
+        var base = this.element.href,
+            basePath = this.element.pathname;
+        // Old IE bug
+        if (basePath.charAt(0) != '/') basePath = '/' + basePath
 
-    $('#slides').slides({
-      start: startSlide
+        console.log(this);
+
+        $().quiz({
+          onWin: showWinPanel
+        });
+
+        initWinPanel();
+
+        $('#badges-101')
+          .css('visibility','visible')
+          .find('a[href^="'+base+'"], a[href^="'+basePath+'"]').each(function() {
+            var $link = $(this),
+                target;
+
+            if (!$link.hasClass('next') && !$link.hasClass('prev')) {
+              if (target = /\/(\d+)\/?$/.exec(this.href)) {
+                this.href = '#' + target[1];
+                $link.addClass('link');
+              }
+            }
+          });
+
+        $('#slides').slides({
+          start: startSlide
+        });
+
+        if (cheat) {
+          showWinPanel();
+          startSlide = $('#slides .slide').length;
+        }
+      }
     });
-    $().quiz({ 
-      onWin: showWinPanel 
-    });
+
     $('.fancybox').fancybox({
       closeBtn: true,
       arrows: false
@@ -31,6 +60,7 @@
        2. Clicks backpack, sees #get-badge subpanel with email submission form
        3. Submits email, sees #after-badge subpanel with external links
     */
+    $('#incomplete').show();
     $('#win').hide();
 
     $('#get-badge').hide();
