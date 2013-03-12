@@ -27,17 +27,12 @@ function openbadges_styles () {
 		'normalise' => get_stylesheet_directory_uri() . '/media/css/normalise.css',
 		'core' => get_stylesheet_directory_uri() . '/media/css/core{.min}.css',
 		'tabzilla' => array('src'=>'//www.mozilla.org/tabzilla/media/css/tabzilla.css'),
-		'fancybox' => get_stylesheet_directory_uri() . '/media/css/jquery.fancybox.css'
+		'fancybox' => get_stylesheet_directory_uri() . '/media/css/jquery.fancybox.css',
+		'badges101' => get_stylesheet_directory_uri() . '/media/css/badges101.css'
 	);
 
 	if (get_post_meta(get_the_ID(), 'page_avatar')) {
 		$styles['avatars'] = get_stylesheet_directory_uri() . '/media/css/avatars{.min}.css';
-	}
-
-	if (is_front_page()) {
-		$styles += array(
-			'badges101' => get_stylesheet_directory_uri() . '/media/css/badges101.css'
-		);
 	}
 
 	foreach ($styles as $style => $config) {
@@ -73,20 +68,15 @@ function openbadges_scripts () {
 	$theme = wp_get_theme();
 
 	$scripts = array(
-		'tabzilla' => array('src'=>'//www.mozilla.org/tabzilla/media/js/tabzilla.js', 'top'=>true)
+		'tabzilla' => array('src'=>'//www.mozilla.org/tabzilla/media/js/tabzilla.js', 'top'=>true),
+		'fancybox' => array('src'=>get_stylesheet_directory_uri() . '/media/js/jquery.fancybox.js', 'dependencies'=>array('jquery')),
+		'slides' => array('src'=>get_stylesheet_directory_uri() . '/media/js/slides.min.jquery.js', 'dependencies'=>array('jquery')),
+		'quickbadge' => array('src'=>get_stylesheet_directory_uri() . '/media/js/quickbadge.js'),
+		'badge_issuer' => array('src'=>'http://beta.openbadges.org/issuer.js'),
+		'quiz' => array('src'=>get_stylesheet_directory_uri() . '/media/js/quiz.js', 'dependencies'=>array('jquery')),
+		'sha256' => array('src'=>get_stylesheet_directory_uri() . '/media/js/sha256.js'),
+		'main' => array('src'=>get_stylesheet_directory_uri() . '/media/js/main.js', 'dependencies'=>array('fancybox')),
 	);
-
-	if (is_front_page()) {
-		$scripts += array(
-			'fancybox' => array('src'=>get_stylesheet_directory_uri() . '/media/js/jquery.fancybox.js', 'dependencies'=>array('jquery')),
-			'slides' => array('src'=>get_stylesheet_directory_uri() . '/media/js/slides.min.jquery.js', 'dependencies'=>array('jquery')),
-			'quickbadge' => array('src'=>get_stylesheet_directory_uri() . '/media/js/quickbadge.js'),
-			'badge_issuer' => array('src'=>'http://beta.openbadges.org/issuer.js'),
-			'quiz' => array('src'=>get_stylesheet_directory_uri() . '/media/js/quiz.js', 'dependencies'=>array('jquery')),
-			'sha256' => array('src'=>get_stylesheet_directory_uri() . '/media/js/sha256.js'),
-			'main' => array('src'=>get_stylesheet_directory_uri() . '/media/js/main.js', 'dependencies'=>array('fancybox')),
-		);
-	}
 
 	foreach ($scripts as $script => $config) {
 		if (!is_array($config)) {
